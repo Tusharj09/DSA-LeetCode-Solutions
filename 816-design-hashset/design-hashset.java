@@ -25,10 +25,8 @@ class MyHashSet {
     
     public boolean contains(int key) {
 
-        for(int val : ls) {
-            if(val == key) return true;
-        }
-        return false;
+        return ls.contains(key);
+
     }
 }
 
