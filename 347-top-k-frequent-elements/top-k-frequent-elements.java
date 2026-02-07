@@ -3,20 +3,32 @@ class Solution {
 
         HashMap<Integer, Integer> hmap = new HashMap<>();
 
-        for(int i = 0; i< nums.length; i++) {
-                hmap.put(nums[i],hmap.getOrDefault(nums[i],0) + 1);
+        List<Integer>[] freq = new ArrayList[nums.length + 1];
 
+        for (int i = 0; i < freq.length; i++) {
+            freq[i] = new ArrayList<>();
         }
 
+        for (int n : nums) {
+            hmap.put(n, hmap.getOrDefault(n, 0) + 1);
+        }
 
-        List<Map.Entry<Integer,Integer>>list = new ArrayList<>(hmap.entrySet());
+        for (Map.Entry<Integer, Integer> entry : hmap.entrySet()) {
+            freq[entry.getValue()].add(entry.getKey());
+        }
 
-        list.sort((a, b) -> b.getValue() - a.getValue());
+        int[] res = new int[k];
+        int index = 0;
 
-int[] result = new int[k];
-for (int i = 0; i < k; i++) {
-    result[i] = list.get(i).getKey();
-}
-        return result;
+        for (int i = freq.length - 1; i > 0 && index < k; i--) {
+            for (int n : freq[i]) {
+                res[index++] = n;
+                if (index == k) {
+                    return res;
+                }
+            }
+        }
+
+        return res;
     }
 }
