@@ -3,12 +3,11 @@ class Solution {
 
         Arrays.sort(nums);
         int len  = nums.length;
-        int  min = Integer.MAX_VALUE ,flag = 0;
-        int ans = min;
-        
-
+    
+           int ans = nums[0] + nums[1] + nums[2];
         for(int i =0  ;i< len-2; i++) {
         int left = i+1 , right = len-1;
+     
 
         while(left < right) {
 
@@ -16,8 +15,8 @@ class Solution {
             if( sum == target) return sum;
             
             
-              if(Math.abs(sum-target) < min) {
-                        min = Math.abs(sum-target);
+              if(Math.abs(sum-target) < Math.abs(ans-target)) {
+                      
                         ans = sum;
              }
              if(sum < target) left++;
@@ -26,5 +25,5 @@ class Solution {
         }
         }
 
-    return ans==Integer.MAX_VALUE?0:ans;
+    return ans;
 }}
