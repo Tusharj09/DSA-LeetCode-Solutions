@@ -2,32 +2,35 @@ class Solution {
     public long maximumSubarraySum(int[] nums, int k) {
         int n = nums.length;
 
-        Set<Integer> st = new HashSet<>();
+        Map<Integer, Integer> map = new HashMap<>();
 
         long maxSum = 0;
-        long sum = 0;
-        int start = 0;
-        for (int end = 0; end < n; end++) {
 
-            while (st.contains(nums[end])) {
-                st.remove(nums[start]);
-                sum -= nums[start];
-                start++;
+        long[] prefixSum = new long[n];
+        prefixSum[0] = nums[0];
+
+        for (int i = 1; i < n; i++) {
+            prefixSum[i] = nums[i] + prefixSum[i - 1];
+
+        }
+        for (int i = 0; i < k; i++) {
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
+
+        if (map.size() == k)
+            maxSum = Math.max(maxSum, prefixSum[k - 1]);
+
+        for (int i = k; i < n; i++) {
+            map.put(nums[i-k], map.getOrDefault(nums[i-k], 0) - 1);
+            if(map.get(nums[i-k] ) == 0 )
+                map.remove(nums[i-k]);
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+
+
+
+            if (map.size() == k) {
+                maxSum = Math.max(maxSum, prefixSum[i] - prefixSum[i - k]);
             }
-            
-            sum += nums[end];
-            st.add(nums[end]);
-
-            if (end - start + 1 > k) {
-                st.remove(nums[start]);
-                sum -= nums[start];
-                start++;
-            }
-
-            if (end - start + 1 == k) {
-                maxSum = Math.max(sum, maxSum);
-            }
-
 
         }
         return maxSum;
